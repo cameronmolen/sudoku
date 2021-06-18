@@ -2,9 +2,9 @@ import java.util.*;
 
 public class SudokuBoard {
 
-  int[][] board;
-  int BOARD_DIMENSIONS = 9;
-  int BOX_DIMENSIONS = 3;
+  private static int[][] board;
+  private static final int BOARD_DIMENSIONS = 9;
+  private static final int BOX_DIMENSIONS = 3;
 
   /** Constructor for SudokuBoard class. */
   public SudokuBoard() {
@@ -12,27 +12,23 @@ public class SudokuBoard {
     createBoard();
   }
 
+  /** Returns the 2-dimensional array that contains the sudoku board. */
+  public int[][] getBoard() { return board; }
+
   /** Generates a solvable sudoku puzzle. */
   private void createBoard() {
-    // Generate list of values from 1-9
-    ArrayList<Integer> values = new ArrayList<>();
-    for(int value = 1; value <= BOARD_DIMENSIONS; value++) values.add(value); // TODO: Check if this can be moved into generateDiagonal()?
+    generateDiagonalMatrices();
+    generateOtherMatrices(0, BOX_DIMENSIONS);
 
-    generateDiagonalMatrices(values);
-    generateOtherMatrices(values);
-
-    System.out.println(toString());
-
-    // TESTING
-//    System.out.println("At board[3][0], 4 is a valid number: " + validCell(3, 0, 4));
-    // END TESTING
+    System.out.println("FINAL BOARD:\n" + toString());
   }
 
-  /**
-   * Fills in the matrices on the diagonal of the sudoku board with numbers 1-9.
-   * @param values list of integers from 1-9
-   */
-  private void generateDiagonalMatrices(ArrayList<Integer> values) {
+  /** Fills in the matrices on the diagonal of the sudoku board with numbers from 1 to the board size. */
+  private void generateDiagonalMatrices() {
+    // Generate list of values from 1-BOARD_DIMENSIONS
+    ArrayList<Integer> values = new ArrayList<>();
+    for(int value = 1; value <= BOARD_DIMENSIONS; value++) values.add(value);
+
     for(int diagonal = 0; diagonal < BOX_DIMENSIONS; diagonal++) {
       // Randomize number order
       Collections.shuffle(values);
@@ -49,8 +45,33 @@ public class SudokuBoard {
    * Fills in the non-diagonal matrices of the sudoku board with numbers 1-9, following the rules of where
    * numbers can be placed.
    */
-  private void generateOtherMatrices(ArrayList<Integer> values) {
+  private boolean generateOtherMatrices(int row, int col) {
+    System.out.println("row = " + row + " col = " + col);
+    // If the column is out of bounds, move to the next row
+    if(row < BOARD_DIMENSIONS - 1 && col >= BOARD_DIMENSIONS) {
+      row++;
+      col = 0;
+    }
+    // If the row and column are out of bounds, stop recursion
+    if(row >= BOARD_DIMENSIONS && col >= BOARD_DIMENSIONS) return true;
+    else if(row / BOX_DIMENSIONS == col / BOX_DIMENSIONS) {
+      col += BOX_DIMENSIONS;
+    }
 
+    System.out.println("Checking board...\n" + toString());
+
+    for(int val = 1; val <= BOARD_DIMENSIONS; val++) {
+      if(validCell(row, col, val)) {
+        board[row][col] = val;
+        // Recursively check if the other cells in the board work with this value, end recursion if they do
+        if(generateOtherMatrices(row, col + 1)) {
+          return true;
+        }
+        // If this val doesn't work at this row and column, set the value of the cell to 0 and try again
+        board[row][col] = 0;
+      }
+    }
+    return false;
   }
 
   /**
