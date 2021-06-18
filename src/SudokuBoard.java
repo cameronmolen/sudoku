@@ -4,6 +4,7 @@ public class SudokuBoard {
 
   int[][] board;
   int BOARD_DIMENSIONS = 9;
+  int BOX_DIMENSIONS = 3;
 
   /** Constructor for SudokuBoard class. */
   public SudokuBoard() {
@@ -13,16 +14,24 @@ public class SudokuBoard {
 
   /** Generates a solvable sudoku puzzle. */
   private void createBoard() {
-    // Generate the matrices along the diagonal
-    for(int diagonal = 0; diagonal < 3; diagonal++) {
-      for(int row = diagonal * 3; row < (diagonal * 3) + 3; row++) {
-        for(int col = diagonal * 3; col < (diagonal * 3); col++) {
-          board[row][col] = (int)(Math.random() * 9);
+    // Generate list of values from 1-9
+    ArrayList<Integer> values = new ArrayList<>();
+    for(int value = 1; value <= BOARD_DIMENSIONS; value++) {
+      values.add(value);
+    }
+
+    // Generate the matrices along the diagonal using the number values generated
+    for(int diagonal = 0; diagonal < BOX_DIMENSIONS; diagonal++) {
+      // Randomize number order
+      Collections.shuffle(values);
+      int i = 0;
+      for(int row = diagonal * BOX_DIMENSIONS; row < (diagonal * BOX_DIMENSIONS) + BOX_DIMENSIONS; row++) {
+        for(int col = diagonal * BOX_DIMENSIONS; col < (diagonal * BOX_DIMENSIONS) + BOX_DIMENSIONS; col++) {
+          board[row][col] = values.get(i++);
         }
       }
     }
-    System.out.println(board);
-    System.out.println("TEST");
+    System.out.println(toString());
   }
 
   public String toString() {
