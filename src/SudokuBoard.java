@@ -46,19 +46,20 @@ public class SudokuBoard {
    * numbers can be placed.
    */
   private boolean generateOtherMatrices(int row, int col) {
-    System.out.println("row = " + row + " col = " + col);
     // If the column is out of bounds, move to the next row
     if(row < BOARD_DIMENSIONS - 1 && col >= BOARD_DIMENSIONS) {
       row++;
       col = 0;
     }
     // If the row and column are out of bounds, stop recursion
-    if(row >= BOARD_DIMENSIONS && col >= BOARD_DIMENSIONS) return true;
-    else if(row / BOX_DIMENSIONS == col / BOX_DIMENSIONS) {
-      col += BOX_DIMENSIONS;
+    if(row / BOX_DIMENSIONS == col / BOX_DIMENSIONS) {
+      if(col + BOX_DIMENSIONS < BOARD_DIMENSIONS) col += BOX_DIMENSIONS;
+      else {
+        row++;
+        col = 0;
+      }
     }
-
-    System.out.println("Checking board...\n" + toString());
+    if(row >= BOARD_DIMENSIONS) return true;
 
     for(int val = 1; val <= BOARD_DIMENSIONS; val++) {
       if(validCell(row, col, val)) {
