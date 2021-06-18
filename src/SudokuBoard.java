@@ -1,14 +1,22 @@
 import java.util.*;
 
+enum Difficulty {
+  EASY,
+  REGULAR,
+  CHALLENGING
+}
+
 public class SudokuBoard {
 
   private static int[][] board;
   private static final int BOARD_DIMENSIONS = 9;
   private static final int BOX_DIMENSIONS = 3;
+  private final Difficulty difficulty;
 
   /** Constructor for SudokuBoard class. */
-  public SudokuBoard() {
+  public SudokuBoard(Difficulty difficulty) {
     board = new int[BOARD_DIMENSIONS][BOARD_DIMENSIONS];
+    this.difficulty = difficulty;
     createBoard();
   }
 
@@ -19,8 +27,7 @@ public class SudokuBoard {
   private void createBoard() {
     generateDiagonalMatrices();
     generateOtherMatrices(0, BOX_DIMENSIONS);
-
-    System.out.println("FINAL BOARD:\n" + toString());
+    removeValues();
   }
 
   /** Fills in the matrices on the diagonal of the sudoku board with numbers from 1 to the board size. */
@@ -42,8 +49,10 @@ public class SudokuBoard {
   }
 
   /**
-   * Fills in the non-diagonal matrices of the sudoku board with numbers 1-9, following the rules of where
-   * numbers can be placed.
+   * Recursively fills in the sudoku board with numbers at the row and column specified.
+   * @param row the row to generate a value for
+   * @param col the column to generate a value for
+   * @return true if the value placed in the cell is valid
    */
   private boolean generateOtherMatrices(int row, int col) {
     // If the column is out of bounds, move to the next row
@@ -51,14 +60,16 @@ public class SudokuBoard {
       row++;
       col = 0;
     }
-    // If the row and column are out of bounds, stop recursion
+    // If the row and column reach one of the already populated diagonal boxes, skip them
     if(row / BOX_DIMENSIONS == col / BOX_DIMENSIONS) {
-      if(col + BOX_DIMENSIONS < BOARD_DIMENSIONS) col += BOX_DIMENSIONS;
-      else {
+      if(col + BOX_DIMENSIONS < BOARD_DIMENSIONS) {
+        col += BOX_DIMENSIONS;
+      } else {
         row++;
         col = 0;
       }
     }
+    // If the row goes out of bounds, the end of the board has been reached – stop recursion
     if(row >= BOARD_DIMENSIONS) return true;
 
     for(int val = 1; val <= BOARD_DIMENSIONS; val++) {
@@ -131,6 +142,21 @@ public class SudokuBoard {
       }
     }
     return true;
+  }
+
+  private void removeValues() {
+    HashSet<Integer> cellsHidden = new HashSet<>();
+    int numToRemove = switch(difficulty) {
+      case EASY -> 45;
+      case REGULAR -> 55;
+      case CHALLENGING -> 70;
+    };
+    for(int i = 0; i < numToRemove; i++) {
+      int cellNum = (int)(Math.random() * 80) + 1;
+      if(cellsHidden.add(cellNum)) {
+        board[cellNum / BOARD_DIMENSIONS][BOARD_DIMENSIONS - (cellNum % BOARD_DIMENSIONS) - 1] = 0;
+      }
+    }
   }
 
   /**
