@@ -144,17 +144,23 @@ public class SudokuBoard {
     return true;
   }
 
+  /**
+   * Removes a number of values from the sudoku board randomly according to what difficulty the player set
+   * the game at.
+   */
   private void removeValues() {
     HashSet<Integer> cellsHidden = new HashSet<>();
     int numToRemove = switch(difficulty) {
-      case EASY -> 45;
-      case REGULAR -> 55;
-      case CHALLENGING -> 70;
+      case EASY -> 40;
+      case REGULAR -> 50;
+      case CHALLENGING -> 60;
     };
     for(int i = 0; i < numToRemove; i++) {
       int cellNum = (int)(Math.random() * 80) + 1;
       if(cellsHidden.add(cellNum)) {
         board[cellNum / BOARD_DIMENSIONS][BOARD_DIMENSIONS - (cellNum % BOARD_DIMENSIONS) - 1] = 0;
+      } else {
+        i--;
       }
     }
   }
