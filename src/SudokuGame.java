@@ -3,10 +3,7 @@ import javax.swing.*;
 public class SudokuGame {
   private JFrame frame;
 
-  public SudokuGame() {}
-
   public void playGame() {
-
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
@@ -19,3 +16,7 @@ public class SudokuGame {
   }
 
 }
+
+/* Notes:
+    - Should I make a panel for the menu that shows when the app is started?
+*/
