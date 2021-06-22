@@ -1,6 +1,12 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SudokuGui extends JFrame {
   private final SudokuBoard board;
@@ -16,6 +22,10 @@ public class SudokuGui extends JFrame {
     setMinimumSize(new Dimension(500,500));
     pack();
     setDefaultCloseOperation(EXIT_ON_CLOSE);
+  }
+
+  public void setListener(SudokuListener listener) {
+    controller.setListener(listener);
   }
 
   private JPanel createGrid() {
@@ -52,6 +62,9 @@ public class SudokuGui extends JFrame {
 
   private JFormattedTextField createNumberField(String value) {
     JFormattedTextField field = new JFormattedTextField();
+    try {
+      field.setFormatterFactory(new DefaultFormatterFactory(new MaskFormatter("#")));
+    } catch (java.text.ParseException ex) {}
     field.setPreferredSize(new Dimension(15,15));
     field.setHorizontalAlignment(JTextField.CENTER);
     if(!value.equals("0")) {

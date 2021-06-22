@@ -4,8 +4,10 @@ import java.awt.*;
 public class SudokuPlay implements Runnable {
 
   public void run() {
+    SudokuListener listener = new SudokuListener();
     SudokuBoard sudokuBoard = new SudokuBoard(Difficulty.REGULAR);
     SudokuGui gui = new SudokuGui(sudokuBoard);
+    gui.setListener(listener);
     gui.setVisible(true);
   }
 
