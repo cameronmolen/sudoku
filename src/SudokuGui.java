@@ -2,11 +2,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class SudokuGame extends JFrame {
+public class SudokuGui extends JFrame {
   private SudokuBoard board;
   private SudokuController controller;
 
-  public SudokuGame(SudokuBoard sudokuBoard) {
+  public SudokuGui(SudokuBoard sudokuBoard) {
     board = sudokuBoard;
     controller = new SudokuController(sudokuBoard.getBoardDimensions());
     setTitle("Sudoku");
@@ -21,7 +21,7 @@ public class SudokuGame extends JFrame {
   private JPanel createGrid() {
     JPanel grid = createMatrices();
     for(int row = 0; row < board.getBoxDimensions(); row++) {
-      for(int col = 0; col < board.getBoardDimensions(); col++) {
+      for(int col = 0; col < board.getBoxDimensions(); col++) {
         JPanel matrix = createMatrices();
         populateMatrix(matrix, row, col);
         grid.add(matrix);
