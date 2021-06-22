@@ -3,12 +3,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class SudokuGui extends JFrame {
-  private SudokuBoard board;
-  private SudokuController controller;
+  private final SudokuBoard board;
+  private final SudokuController controller;
 
   public SudokuGui(SudokuBoard sudokuBoard) {
     board = sudokuBoard;
-    controller = new SudokuController(sudokuBoard.getBoardDimensions());
+    controller = new SudokuController(sudokuBoard);
     setTitle("Sudoku");
     JPanel panel = new JPanel(new GridBagLayout());
     panel.add(createGrid(), getConstraints());
@@ -19,10 +19,10 @@ public class SudokuGui extends JFrame {
   }
 
   private JPanel createGrid() {
-    JPanel grid = createMatrices();
+    JPanel grid = createMatrices(2);
     for(int row = 0; row < board.getBoxDimensions(); row++) {
       for(int col = 0; col < board.getBoxDimensions(); col++) {
-        JPanel matrix = createMatrices();
+        JPanel matrix = createMatrices(1);
         populateMatrix(matrix, row, col);
         grid.add(matrix);
       }
@@ -31,28 +31,34 @@ public class SudokuGui extends JFrame {
     return grid;
   }
 
-  private JPanel createMatrices() {
+  private JPanel createMatrices(int distanceBetween) {
     GridLayout gridLayout = new GridLayout(3, 3, 1, 1);
+    gridLayout.setHgap(distanceBetween);
+    gridLayout.setVgap(distanceBetween);
     return new JPanel(gridLayout);
   }
 
   private void populateMatrix(JPanel matrix, int row, int col) {
     for(int boxRow = 0; boxRow < board.getBoxDimensions(); boxRow++) {
       for(int boxCol = 0; boxCol < board.getBoxDimensions(); boxCol++) {
-        JFormattedTextField field = createNumberField();
         int rowCoord = (row * 3) + boxRow;
         int colCoord = (col * 3) + boxCol;
+        JFormattedTextField field = createNumberField(String.valueOf(board.getBoard()[rowCoord][colCoord]));
         controller.bindCell(rowCoord, colCoord, field);
         matrix.add(field);
       }
     }
   }
 
-  private JFormattedTextField createNumberField() {
+  private JFormattedTextField createNumberField(String value) {
     JFormattedTextField field = new JFormattedTextField();
-    field.setPreferredSize(new Dimension(15,30));
+    field.setPreferredSize(new Dimension(15,15));
     field.setHorizontalAlignment(JTextField.CENTER);
-    field.setText(" ");
+    if(!value.equals("0")) {
+      field.setText(value);
+    } else {
+      field.setText("");
+    }
     field.setBorder(null);
     return field;
   }

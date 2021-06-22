@@ -5,9 +5,11 @@ import java.beans.PropertyChangeListener;
 public class SudokuController {
 
   private JFormattedTextField[][] sudokuGrid;
+  private SudokuBoard board;
 
-  public SudokuController(int dimensions) {
-    sudokuGrid = new JFormattedTextField[dimensions][dimensions];
+  public SudokuController(SudokuBoard sudokuBoard) {
+    board = sudokuBoard;
+    sudokuGrid = new JFormattedTextField[board.getBoardDimensions()][board.getBoardDimensions()];
   }
 
   public void bindCell(int row, int col, JFormattedTextField field) {
@@ -16,6 +18,7 @@ public class SudokuController {
       public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getNewValue() != null) {
           String newValue = (String)evt.getNewValue();
+          // TODO: Make something happen if player ediits a field
         }
       }
     });
