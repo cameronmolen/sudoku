@@ -26,6 +26,9 @@ public class SudokuBoard {
   /** Returns the dimensions of the sudoku board. */
   public int getBoardDimensions() { return BOARD_DIMENSIONS; }
 
+  /** Returns the dimensions of a single box. */
+  public int getBoxDimensions() { return BOX_DIMENSIONS; }
+
   /** Generates a solvable sudoku puzzle. */
   private void createBoard() {
     generateDiagonalMatrices();
