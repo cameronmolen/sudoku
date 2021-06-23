@@ -9,15 +9,21 @@ public class SudokuController {
   SudokuListener listener;
   Thread backgroundThread;
 
+  /** Constructor for SudokuController class. */
   public SudokuController(SudokuBoard sudokuBoard) {
     board = sudokuBoard;
     sudokuGrid = new JFormattedTextField[board.getBoardDimensions()][board.getBoardDimensions()];
   }
 
-  public void setListener(SudokuListener listener) {
-    this.listener = listener;
-  }
+  /** Sets the listener for the SudokuController. */
+  public void setListener(SudokuListener listener) { this.listener = listener; }
 
+  /**
+   * Binds a cell in the GUI to the controller and listens for changes.
+   * @param row the row of the cell
+   * @param col the column of the cell
+   * @param field the FormattedTextField that represents the cell
+   */
   public void bindCell(int row, int col, JFormattedTextField field) {
     field.addPropertyChangeListener("value", new PropertyChangeListener() {
       public void propertyChange(PropertyChangeEvent evt) {
