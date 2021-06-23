@@ -3,6 +3,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
+import java.text.ParseException;
 
 public class SudokuGui extends JFrame {
   private final SudokuBoard board;
@@ -84,13 +85,15 @@ public class SudokuGui extends JFrame {
    */
   private JFormattedTextField createEditableNumberField() {
     JFormattedTextField field = new JFormattedTextField();
-    try {
-      field.setFormatterFactory(new DefaultFormatterFactory(new MaskFormatter("#")));
-    } catch (java.text.ParseException ex) {}
     field.setPreferredSize(new Dimension(15,15));
     field.setHorizontalAlignment(JTextField.CENTER);
     field.setText("");
     field.setBorder(null);
+    field.setInputVerifier(new InputVerifier() {
+      public boolean verify(JComponent input) {
+        return field.getText().isEmpty() || (field.getText().length() <= 1 && (Character.isDigit(field.getText().charAt(0)) || Character.isSpaceChar(field.getText().charAt(0))));
+      }
+    });
     return field;
   }
 
