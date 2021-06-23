@@ -1,5 +1,6 @@
 import java.util.*;
 
+/** Enumeration for the levels of difficulty that the SudokuBoard can generate. */
 enum Difficulty {
   EASY,
   REGULAR,
@@ -177,12 +178,12 @@ public class SudokuBoard {
    */
   public String toString() {
     StringBuilder stringBuilder = new StringBuilder();
-    for(int row = 0; row < 9; row++) {
-      for(int col = 0; col < 9; col++) {
+    for(int row = 0; row < BOARD_DIMENSIONS; row++) {
+      for(int col = 0; col < BOARD_DIMENSIONS; col++) {
         stringBuilder.append(board[row][col]).append(" ");
-        if(col == 8) stringBuilder.append("\n");
+        if(col == BOARD_DIMENSIONS - 1) stringBuilder.append("\n");
       }
-      if(row == 8) stringBuilder.append("\n");
+      if(row == BOARD_DIMENSIONS - 1) stringBuilder.append("\n");
     }
     return stringBuilder.toString();
   }

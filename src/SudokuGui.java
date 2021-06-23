@@ -16,7 +16,7 @@ public class SudokuGui extends JFrame {
     JPanel panel = new JPanel(new GridBagLayout());
     panel.add(createGrid(), getConstraints());
     getContentPane().add(panel, BorderLayout.CENTER);
-    setMinimumSize(new Dimension(500,500));
+    setMinimumSize(new Dimension(550,550));
     pack();
     setDefaultCloseOperation(EXIT_ON_CLOSE);
   }
@@ -65,8 +65,8 @@ public class SudokuGui extends JFrame {
     for(int boxRow = 0; boxRow < board.getBoxDimensions(); boxRow++) {
       for(int boxCol = 0; boxCol < board.getBoxDimensions(); boxCol++) {
         JFormattedTextField field;
-        int rowCoord = (row * 3) + boxRow;
-        int colCoord = (col * 3) + boxCol;
+        int rowCoord = (row * board.getBoxDimensions()) + boxRow;
+        int colCoord = (col * board.getBoxDimensions()) + boxCol;
         if(board.getBoard()[rowCoord][colCoord] != 0) {
           field = createLockedNumberField(String.valueOf(board.getBoard()[rowCoord][colCoord]));
         } else {
