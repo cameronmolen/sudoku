@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SudokuGui extends JFrame {
   private final SudokuBoard board;
@@ -11,6 +13,11 @@ public class SudokuGui extends JFrame {
   public SudokuGui(SudokuBoard sudokuBoard) {
     board = sudokuBoard;
     controller = new SudokuController(sudokuBoard);
+    System.setProperty("apple.laf.useScreenMenuBar", "true");
+    System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Stack");
+    try {
+      UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+    } catch (Exception e) {}
     setTitle("Sudoku");
     setJMenuBar(createMenu());
     JPanel panel = new JPanel(new GridBagLayout());
@@ -32,13 +39,25 @@ public class SudokuGui extends JFrame {
    */
   private JMenuBar createMenu() {
     JMenuBar menuBar = new JMenuBar();
-    JMenu difficultySetting = new JMenu("Difficulty");
-    JRadioButtonMenuItem easy = new JRadioButtonMenuItem("Easy");
-    JRadioButtonMenuItem regular = new JRadioButtonMenuItem("Regular");
-    JRadioButtonMenuItem challenging = new JRadioButtonMenuItem("Challenging");
-    difficultySetting.add(easy);
-    difficultySetting.add(regular);
-    difficultySetting.add(challenging);
+    MenuItemListener menuItemListener = new MenuItemListener();
+    JMenu newGameMenu = new JMenu("New Game");
+    // Create easy
+    JMenuItem easyMenuItem = new JMenuItem("Easy");
+    easyMenuItem.setActionCommand("EASY");
+    easyMenuItem.addActionListener(menuItemListener);
+
+    JMenuItem regularMenuItem = new JMenuItem("Regular");
+    regularMenuItem.setActionCommand("REGULAR");
+    regularMenuItem.addActionListener(menuItemListener);
+
+    JMenuItem challengingMenuItem = new JMenuItem("Challenging");
+    challengingMenuItem.setActionCommand("CHALLENGING");
+    challengingMenuItem.addActionListener(menuItemListener);
+
+    newGameMenu.add(easyMenuItem);
+    newGameMenu.add(regularMenuItem);
+    newGameMenu.add(challengingMenuItem);
+    menuBar.add(newGameMenu);
     return menuBar;
   }
 
@@ -120,6 +139,7 @@ public class SudokuGui extends JFrame {
     JFormattedTextField field = new JFormattedTextField();
     field.setPreferredSize(new Dimension(15,15));
     field.setEditable(false);
+    field.setBackground(Color.WHITE);
     field.setHorizontalAlignment(JTextField.CENTER);
     field.setText(value);
     field.setBorder(null);
@@ -138,4 +158,17 @@ public class SudokuGui extends JFrame {
     return constraints;
   }
 
+}
+
+class MenuItemListener implements ActionListener {
+  public void actionPerformed(ActionEvent e) {
+    // Start new game with the specified difficulty
+    if(e.getActionCommand().equals(Difficulty.EASY.toString())) {
+      // TODO: Start a new game with easy difficulty
+    } else if(e.getActionCommand().equals(Difficulty.REGULAR.toString())) {
+      // TODO: Start a new game with regular difficulty
+    } else {
+      // TODO: Start a new game with challenging difficulty
+    }
+  }
 }
