@@ -1,19 +1,18 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
 import java.awt.*;
-import java.text.ParseException;
 
 public class SudokuGui extends JFrame {
   private final SudokuBoard board;
   private final SudokuController controller;
+//  private final JMenuBar menuBar;
 
   /** Constructor for SudokuGui class. */
   public SudokuGui(SudokuBoard sudokuBoard) {
     board = sudokuBoard;
     controller = new SudokuController(sudokuBoard);
     setTitle("Sudoku");
+    setJMenuBar(createMenu());
     JPanel panel = new JPanel(new GridBagLayout());
     panel.add(createGrid(), getConstraints());
     getContentPane().add(panel, BorderLayout.CENTER);
@@ -25,6 +24,22 @@ public class SudokuGui extends JFrame {
   /** Sets the listener for the SudokuController. */
   public void setListener(SudokuListener listener) {
     controller.setListener(listener);
+  }
+
+  /**
+   * Creates and returns the GUI menu.
+   * @return the JMenuBar to be used by the GUI
+   */
+  private JMenuBar createMenu() {
+    JMenuBar menuBar = new JMenuBar();
+    JMenu difficultySetting = new JMenu("Difficulty");
+    JRadioButtonMenuItem easy = new JRadioButtonMenuItem("Easy");
+    JRadioButtonMenuItem regular = new JRadioButtonMenuItem("Regular");
+    JRadioButtonMenuItem challenging = new JRadioButtonMenuItem("Challenging");
+    difficultySetting.add(easy);
+    difficultySetting.add(regular);
+    difficultySetting.add(challenging);
+    return menuBar;
   }
 
   /**
