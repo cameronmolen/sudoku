@@ -13,6 +13,7 @@ public class SudokuBoard {
   private static final int BOARD_DIMENSIONS = 9;
   private static final int BOX_DIMENSIONS = 3;
   private final Difficulty difficulty;
+  private int numBlanksRemaining = 0;
 
   /** Constructor for SudokuBoard class. */
   public SudokuBoard(Difficulty difficulty) {
@@ -29,6 +30,15 @@ public class SudokuBoard {
 
   /** Returns the dimensions of a single box. */
   public int getBoxDimensions() { return BOX_DIMENSIONS; }
+
+  /** Returns the number of blank fields remaining on the board. */
+  public int getNumBlanksRemaining() { return numBlanksRemaining; }
+
+  /** Decreases numBlanksRemaining by 1. */
+  public void decreaseNumBlanksRemaining() { numBlanksRemaining--; }
+
+  /** Increases numBlanksRemaining by 1. */
+  public void increaseNumBlanksRemaining() { numBlanksRemaining++; }
 
   /** Generates a solvable sudoku puzzle. */
   private void createBoard() {
@@ -166,10 +176,19 @@ public class SudokuBoard {
       int cellNum = (int)(Math.random() * 80) + 1;
       if(cellsHidden.add(cellNum)) {
         board[cellNum / BOARD_DIMENSIONS][BOARD_DIMENSIONS - (cellNum % BOARD_DIMENSIONS) - 1] = 0;
+        numBlanksRemaining++;
       } else {
         i--;
       }
     }
+  }
+
+  /**
+   * Checks the board to confirm that every number is in a valid location.
+   * @return true if the board is valid
+   */
+  public boolean checkIfCorrect() {
+    return false;
   }
 
   /**

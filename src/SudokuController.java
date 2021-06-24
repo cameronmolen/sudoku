@@ -1,11 +1,13 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class SudokuController {
 
-  private JFormattedTextField[][] sudokuGrid;
-  private SudokuBoard board;
+  private final JFormattedTextField[][] sudokuGrid;
+  private final SudokuBoard board;
   SudokuListener listener;
   Thread backgroundThread;
 
@@ -25,14 +27,18 @@ public class SudokuController {
    * @param field the FormattedTextField that represents the cell
    */
   public void bindCell(int row, int col, JFormattedTextField field) {
-    field.addPropertyChangeListener("value", new PropertyChangeListener() {
-      public void propertyChange(PropertyChangeEvent evt) {
-        if(evt.getNewValue() != null) {
-          String newValue = (String)evt.getNewValue();
-          System.out.println("Value at " + row + ", " + col + " changed to " + newValue);
-          // TODO: Make something happen if player edits a field
-        }
+    field.getDocument().addDocumentListener(new DocumentListener() {
+      public void insertUpdate(DocumentEvent e) {
+        board.decreaseNumBlanksRemaining();
+        System.out.println("Value at " + row + ", " + col + " changed. Number of blanks remaining: " + board.getNumBlanksRemaining()); // DEBUGGING
       }
+
+      public void removeUpdate(DocumentEvent e) {
+        board.increaseNumBlanksRemaining();
+        System.out.println("Value at " + row + ", " + col + " removed. Number of blanks remaining: " + board.getNumBlanksRemaining()); // DEBUGGING
+      }
+
+      public void changedUpdate(DocumentEvent e) {}
     });
     sudokuGrid[row][col] = field;
   }

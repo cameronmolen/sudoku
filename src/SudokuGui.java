@@ -126,7 +126,8 @@ public class SudokuGui extends JFrame {
     field.setBorder(null);
     field.setInputVerifier(new InputVerifier() {
       public boolean verify(JComponent input) {
-        return field.getText().isEmpty() || (field.getText().length() <= 1 && (Character.isDigit(field.getText().charAt(0)) || Character.isSpaceChar(field.getText().charAt(0))));
+        return field.getText().isEmpty() || (field.getText().length() <= 1 &&
+                Character.isDigit(field.getText().charAt(0)));
       }
     });
     return field;
@@ -161,6 +162,7 @@ public class SudokuGui extends JFrame {
 
 }
 
+/** Calls a method based on the menu item that is selected. */
 class MenuItemListener implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     // Start new game with the specified difficulty
