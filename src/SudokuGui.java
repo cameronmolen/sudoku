@@ -21,9 +21,12 @@ public class SudokuGui extends JFrame {
     }
     setTitle("Sudoku");
     setJMenuBar(createMenu());
-    JPanel panel = new JPanel(new GridBagLayout());
-    panel.add(createGrid(), getConstraints());
-    getContentPane().add(panel, BorderLayout.CENTER);
+    JPanel gridPanel = new JPanel(new GridBagLayout());
+    gridPanel.add(createGrid(), getConstraints());
+    JPanel statsPanel = new JPanel(new GridBagLayout());
+    statsPanel.add(createStats(), getConstraints());
+    getContentPane().add(gridPanel, BorderLayout.CENTER);
+    getContentPane().add(statsPanel, BorderLayout.NORTH);
     setMinimumSize(new Dimension(550,550));
     pack();
     setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -92,7 +95,8 @@ public class SudokuGui extends JFrame {
   }
 
   /**
-   * Populates each field in a matrix with generated values from the SudokuBoard class.
+   * Populates each field in a matrix with generated values from the SudokuBoard class or creates an
+   * editable blank field for the player to enter in guesses.
    * @param matrix a JPanel matrix to be populated with digits
    * @param row the row that the matrix is in on the board
    * @param col the column that the matrix is in on the board
@@ -146,6 +150,18 @@ public class SudokuGui extends JFrame {
     field.setText(value);
     field.setBorder(null);
     return field;
+  }
+
+  private JPanel createStats() {
+    BorderLayout layout = new BorderLayout();
+
+    JTextArea title = new JTextArea(3, 3); // FIXME: Not displaying properly
+    title.append("Sudoku");
+    JTextArea time = new JTextArea();
+//    time.
+
+    layout.addLayoutComponent(title, BorderLayout.CENTER);
+    return new JPanel(layout);
   }
 
   /**
