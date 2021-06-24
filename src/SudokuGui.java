@@ -3,8 +3,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.Flow;
 
 public class SudokuGui extends JFrame {
+  private final int GUI_DIMENSIONS = 550;
   private final SudokuBoard board;
   private final SudokuController controller;
 
@@ -21,13 +23,12 @@ public class SudokuGui extends JFrame {
     }
     setTitle("Sudoku");
     setJMenuBar(createMenu());
-    JPanel gridPanel = new JPanel(new GridBagLayout());
-    gridPanel.add(createGrid(), getConstraints());
-    JPanel statsPanel = new JPanel(new GridBagLayout());
-    statsPanel.add(createStats(), getConstraints());
-    getContentPane().add(gridPanel, BorderLayout.CENTER);
-    getContentPane().add(statsPanel, BorderLayout.NORTH);
-    setMinimumSize(new Dimension(550,550));
+
+    getContentPane().add(createGrid(), BorderLayout.CENTER);
+    getContentPane().add(createStats(), BorderLayout.NORTH);
+
+    setMinimumSize(new Dimension(GUI_DIMENSIONS,GUI_DIMENSIONS));
+    setMaximumSize(new Dimension(GUI_DIMENSIONS,GUI_DIMENSIONS));
     pack();
     setDefaultCloseOperation(EXIT_ON_CLOSE);
   }
@@ -153,15 +154,28 @@ public class SudokuGui extends JFrame {
   }
 
   private JPanel createStats() {
-    BorderLayout layout = new BorderLayout();
+    JPanel layout = new JPanel(new GridBagLayout());
 
-    JTextArea title = new JTextArea(3, 3); // FIXME: Not displaying properly
-    title.append("Sudoku");
-    JTextArea time = new JTextArea();
-//    time.
+    JLabel title = new JLabel("Sudoku");
+    System.out.println(title.getFont());
+    title.setFont(new Font("Dialog", Font.BOLD , 16));
 
-    layout.addLayoutComponent(title, BorderLayout.CENTER);
-    return new JPanel(layout);
+    JLabel time = new JLabel("Time Elapsed: ");
+
+    JButton submit = new JButton("Submit");
+    submit.setBorderPainted(false);
+    submit.setBackground(Color.WHITE);
+    submit.setFocusPainted(false);
+
+    GridBagConstraints constraints = getConstraints();
+    constraints.fill = GridBagConstraints.CENTER;
+    constraints.anchor = GridBagConstraints.SOUTH;
+
+    layout.add(time, constraints);
+    layout.add(title, constraints);
+    layout.add(submit, constraints);
+    layout.setPreferredSize(new Dimension(GUI_DIMENSIONS, 30));
+    return layout;
   }
 
   /**
