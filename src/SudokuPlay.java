@@ -1,6 +1,13 @@
 import java.awt.*;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SudokuPlay implements Runnable {
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(new SudokuPlay());
+  }
 
   /** Generates the SudokuBoard and runs the GUI with listener. */
   public void run() {
@@ -19,7 +26,15 @@ public class SudokuPlay implements Runnable {
     gui.setVisible(true);
   }
 
-  public static void main(String[] args) {
-    EventQueue.invokeLater(new SudokuPlay());
+  private void startNewGame(SudokuController controller) { // TODO: Implement timer
+    Timer timer = new Timer();
+    timer.scheduleAtFixedRate(new TimerTask() {
+      @Override
+      public void run() {
+        counter++;
+        System.out.println(counter);
+      }
+    }, new Date(), 1000);
   }
+
 }

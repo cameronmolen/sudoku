@@ -153,27 +153,32 @@ public class SudokuGui extends JFrame {
     return field;
   }
 
+  /**
+   * Creates the top JPanel that displays the title, time elapsed, and the submit button.
+   * @return JPanel with added components
+   */
   private JPanel createStats() {
     JPanel layout = new JPanel(new GridBagLayout());
 
-    JLabel title = new JLabel("Sudoku");
-    System.out.println(title.getFont());
-    title.setFont(new Font("Dialog", Font.BOLD , 16));
+    JLabel titleLabel = new JLabel("Sudoku");
+    System.out.println(titleLabel.getFont());
+    titleLabel.setFont(new Font("Dialog", Font.BOLD , 16));
 
-    JLabel time = new JLabel("Time Elapsed: ");
+    JLabel timeLabel = new JLabel("Time Elapsed: 0:00"); // TODO: Fix the alignment of each of these components. Should be evenly spaced with title in center
+    controller.bindTimeLabel(timeLabel);
 
-    JButton submit = new JButton("Submit");
-    submit.setBorderPainted(false);
-    submit.setBackground(Color.WHITE);
-    submit.setFocusPainted(false);
+    JButton submitButton = new JButton("Submit");
+    submitButton.setBorderPainted(false);
+    submitButton.setBackground(Color.WHITE);
+    submitButton.setFocusPainted(false);
 
     GridBagConstraints constraints = getConstraints();
     constraints.fill = GridBagConstraints.CENTER;
     constraints.anchor = GridBagConstraints.SOUTH;
 
-    layout.add(time, constraints);
-    layout.add(title, constraints);
-    layout.add(submit, constraints);
+    layout.add(timeLabel, constraints);
+    layout.add(titleLabel, constraints);
+    layout.add(submitButton, constraints);
     layout.setPreferredSize(new Dimension(GUI_DIMENSIONS, 30));
     return layout;
   }

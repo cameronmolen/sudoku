@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -9,6 +10,7 @@ public class SudokuController {
   private final JFormattedTextField[][] sudokuGrid;
   private final SudokuBoard board;
   SudokuListener listener;
+  JLabel timeLabel;
   Thread backgroundThread;
 
   /** Constructor for SudokuController class. */
@@ -41,6 +43,18 @@ public class SudokuController {
       public void changedUpdate(DocumentEvent e) {}
     });
     sudokuGrid[row][col] = field;
+  }
+
+  public void bindTimeLabel(JLabel timeLabel) {
+    this.timeLabel = timeLabel;
+  }
+
+  public void setTimer(String time) {
+    EventQueue.invokeLater(new Runnable() {
+      public void run() {
+        timeLabel.setText("Time Elapsed: " + time);
+      }
+    });
   }
 
 }
