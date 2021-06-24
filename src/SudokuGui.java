@@ -7,17 +7,18 @@ import java.awt.event.ActionListener;
 public class SudokuGui extends JFrame {
   private final SudokuBoard board;
   private final SudokuController controller;
-//  private final JMenuBar menuBar;
 
   /** Constructor for SudokuGui class. */
   public SudokuGui(SudokuBoard sudokuBoard) {
     board = sudokuBoard;
     controller = new SudokuController(sudokuBoard);
-    System.setProperty("apple.laf.useScreenMenuBar", "true");
-    System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Stack");
     try {
+      System.setProperty("apple.laf.useScreenMenuBar", "true");
+      System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Stack");
       UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-    } catch (Exception e) {}
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
     setTitle("Sudoku");
     setJMenuBar(createMenu());
     JPanel panel = new JPanel(new GridBagLayout());
@@ -41,7 +42,7 @@ public class SudokuGui extends JFrame {
     JMenuBar menuBar = new JMenuBar();
     MenuItemListener menuItemListener = new MenuItemListener();
     JMenu newGameMenu = new JMenu("New Game");
-    // Create easy
+    
     JMenuItem easyMenuItem = new JMenuItem("Easy");
     easyMenuItem.setActionCommand("EASY");
     easyMenuItem.addActionListener(menuItemListener);
@@ -163,12 +164,15 @@ public class SudokuGui extends JFrame {
 class MenuItemListener implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     // Start new game with the specified difficulty
+    SudokuBoard newBoard;
     if(e.getActionCommand().equals(Difficulty.EASY.toString())) {
-      // TODO: Start a new game with easy difficulty
+      newBoard = new SudokuBoard(Difficulty.EASY);
     } else if(e.getActionCommand().equals(Difficulty.REGULAR.toString())) {
-      // TODO: Start a new game with regular difficulty
+      newBoard = new SudokuBoard(Difficulty.REGULAR);
     } else {
-      // TODO: Start a new game with challenging difficulty
+      newBoard = new SudokuBoard(Difficulty.CHALLENGING);
     }
+    SudokuPlay play = new SudokuPlay();
+    play.run(newBoard);
   }
 }
