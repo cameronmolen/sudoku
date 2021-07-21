@@ -1,5 +1,7 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
@@ -26,8 +28,8 @@ public class SudokuGui extends JFrame {
     getContentPane().add(createGrid(), BorderLayout.CENTER);
     getContentPane().add(createStats(), BorderLayout.NORTH);
 
-    setMinimumSize(new Dimension(GUI_DIMENSIONS,GUI_DIMENSIONS));
-    setMaximumSize(new Dimension(GUI_DIMENSIONS,GUI_DIMENSIONS));
+    setMinimumSize(new Dimension(GUI_DIMENSIONS, GUI_DIMENSIONS));
+    setMaximumSize(new Dimension(GUI_DIMENSIONS, GUI_DIMENSIONS));
     pack();
     setDefaultCloseOperation(EXIT_ON_CLOSE);
   }
@@ -214,20 +216,27 @@ class MenuItemListener implements ActionListener {
 }
 
 /** Toast message class to be displayed when the player presses the submit button. */
-class Toast extends JFrame {
+class Toast extends JFrame { // FIXME: Doesn't show the text on the toast. Look at createStats() method for possible solution
   public Toast(String message, SudokuGui gui) {
-    setLayout(new GridBagLayout());
     setUndecorated(true);
+    getContentPane().setLayout(new BorderLayout(0, 0));
     getContentPane().setBackground(new Color(238, 238, 238, 170));
     setSize(300, 50);
     setLocationRelativeTo(gui);
     setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
 
+    // testing, not sure if necessary
+    JPanel panel = new JPanel();
+    panel.setBackground(Color.GRAY);
+    panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 2));
+    getContentPane().add(panel, BorderLayout.CENTER);
+
     // Add JLabel to the toast containing the message
     JLabel label = new JLabel(message);
+    label.setText(message);
+    label.setFont(new Font("Dialog", Font.BOLD, 12));
     label.setForeground(Color.BLACK);
-    label.setOpaque(false);
-    add(label);
+    panel.add(label);
   }
 
   /** Displays the toast message and slowly fades away. */
@@ -251,3 +260,44 @@ class Toast extends JFrame {
   }
 
 }
+
+//class Toast extends JDialog {
+//  int miliseconds;
+//  public Toast(String toastString, SudokuGui gui) {
+//    this.miliseconds = 1000;
+//    setUndecorated(true);
+//    getContentPane().setLayout(new BorderLayout(0, 0));
+//
+//    JPanel panel = new JPanel();
+//    panel.setBackground(Color.GRAY);
+//    panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 2));
+//    getContentPane().add(panel, BorderLayout.CENTER);
+//
+//    JLabel toastLabel = new JLabel("");
+//    toastLabel.setText(toastString);
+//    toastLabel.setFont(new Font("Dialog", Font.BOLD, 12));
+//    toastLabel.setForeground(Color.WHITE);
+//
+//    setBounds(100, 100, toastLabel.getPreferredSize().width+20, 31);
+//
+//
+//    setAlwaysOnTop(true);
+//    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+//    int y = dim.height/2-getSize().height/2;
+//    int half = y/2;
+//    setLocation(dim.width/2-getSize().width/2, y+half);
+//    panel.add(toastLabel);
+//    setVisible(false);
+//
+//    new Thread(){
+//      public void run() {
+//        try {
+//          Thread.sleep(miliseconds);
+//          dispose();
+//        } catch (InterruptedException e) {
+//          e.printStackTrace();
+//        }
+//      }
+//    }.start();
+//  }
+//}
