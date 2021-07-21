@@ -12,13 +12,15 @@ public class SudokuController {
 
   private final JFormattedTextField[][] sudokuGrid;
   private final SudokuBoard board;
+  private SudokuGui gui;
   SudokuListener listener;
   JLabel timeLabel;
   Thread backgroundThread;
 
   /** Constructor for SudokuController class. */
-  public SudokuController(SudokuBoard sudokuBoard) {
+  public SudokuController(SudokuBoard sudokuBoard, SudokuGui gui) {
     board = sudokuBoard;
+    this.gui = gui;
     sudokuGrid = new JFormattedTextField[board.getBoardDimensions()][board.getBoardDimensions()];
   }
 
@@ -57,8 +59,12 @@ public class SudokuController {
 
       public void actionPerformed(ActionEvent e) {
         if(board.checkIfCorrect()) {
-          System.out.println("The board is correct!");
+          Toast toast = new Toast("The board is correct!", gui);
+          toast.display();
+          System.out.println("The board is correct!"); // TODO: Make GUI display this instead of printing it
         } else {
+          Toast toast = new Toast("The board is incorrect", gui);
+          toast.display();
           System.out.println("The board is incorrect.");
         }
       }

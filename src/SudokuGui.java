@@ -1,9 +1,8 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.concurrent.Flow;
+import java.awt.event.*;
+import java.awt.geom.RoundRectangle2D;
 
 public class SudokuGui extends JFrame {
   private final int GUI_DIMENSIONS = 550;
@@ -13,7 +12,7 @@ public class SudokuGui extends JFrame {
   /** Constructor for SudokuGui class. */
   public SudokuGui(SudokuBoard sudokuBoard) {
     board = sudokuBoard;
-    controller = new SudokuController(sudokuBoard);
+    controller = new SudokuController(sudokuBoard, this);
     try {
       System.setProperty("apple.laf.useScreenMenuBar", "true");
       System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Stack");
@@ -212,4 +211,45 @@ class MenuItemListener implements ActionListener {
     SudokuPlay play = new SudokuPlay();
     play.run(newBoard);
   }
+}
+
+/** Toast message class to be displayed when the player presses the submit button. */
+class Toast extends JFrame {
+  public Toast(String message, SudokuGui gui) {
+    setLayout(new GridBagLayout());
+    setUndecorated(true);
+    setBackground(new Color(211, 211, 211));
+    setSize(300, 50);
+    setLocationRelativeTo(gui);
+    add(new JLabel(message));
+
+    // Change shape of toast message to rounded rectangle
+    addComponentListener(new ComponentAdapter() {
+      @Override
+      public void componentResized(ComponentEvent e) {
+        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
+      }
+    });
+  }
+
+  /** Displays the toast message and slowly fades away. */
+  public void display() {
+    try {
+      // Display the toast message
+      setOpacity(1);
+      setVisible(true);
+      Thread.sleep(200);
+
+      // Slowly fade out toast message
+      for(double i = 1.0; i > 0.2; i -= 0.1) {
+        Thread.sleep(100);
+        setOpacity((float)i);
+      }
+
+      setVisible(false);
+    } catch(Exception e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
 }
