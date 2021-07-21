@@ -1,7 +1,10 @@
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -32,17 +35,35 @@ public class SudokuController {
     field.getDocument().addDocumentListener(new DocumentListener() {
       public void insertUpdate(DocumentEvent e) {
         board.decreaseNumBlanksRemaining();
-        System.out.println("Value at " + row + ", " + col + " changed. Number of blanks remaining: " + board.getNumBlanksRemaining()); // DEBUGGING
+        try {
+          board.updateBoard(row, col, Integer.parseInt(e.getDocument().getText(e.getOffset(), e.getLength())));
+        } catch (BadLocationException badLocationException) {
+          badLocationException.printStackTrace();
+        }
       }
 
       public void removeUpdate(DocumentEvent e) {
         board.increaseNumBlanksRemaining();
-        System.out.println("Value at " + row + ", " + col + " removed. Number of blanks remaining: " + board.getNumBlanksRemaining()); // DEBUGGING
+        board.updateBoard(row, col, 0);
       }
 
       public void changedUpdate(DocumentEvent e) {}
     });
     sudokuGrid[row][col] = field;
+  }
+
+  public void bindSubmitButton(JButton button) {
+    button.addActionListener(new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+        if(board.checkIfCorrect()) {
+          System.out.println("The board is correct!");
+        } else {
+          System.out.println("The board is incorrect.");
+        }
+      }
+
+    });
   }
 
   public void bindTimeLabel(JLabel timeLabel) {

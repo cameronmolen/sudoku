@@ -26,15 +26,15 @@ public class SudokuPlay implements Runnable {
     gui.setVisible(true);
   }
 
-  private void startNewGame(SudokuController controller) { // TODO: Implement timer
-    Timer timer = new Timer();
-    timer.scheduleAtFixedRate(new TimerTask() {
-      @Override
-      public void run() {
-        counter++;
-        System.out.println(counter);
-      }
-    }, new Date(), 1000);
-  }
+//  private void startNewGame(SudokuController controller) { // TODO: Implement timer
+//    Timer timer = new Timer();
+//    timer.scheduleAtFixedRate(new TimerTask() {
+//      @Override
+//      public void run() {
+//        counter++;
+//        System.out.println(counter);
+//      }
+//    }, new Date(), 1000);
+//  }
 
 }

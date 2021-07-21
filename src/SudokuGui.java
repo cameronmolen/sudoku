@@ -161,7 +161,6 @@ public class SudokuGui extends JFrame {
     JPanel layout = new JPanel(new GridBagLayout());
 
     JLabel titleLabel = new JLabel("Sudoku");
-    System.out.println(titleLabel.getFont());
     titleLabel.setFont(new Font("Dialog", Font.BOLD , 16));
 
     JLabel timeLabel = new JLabel("Time Elapsed: 0:00"); // TODO: Fix the alignment of each of these components. Should be evenly spaced with title in center
@@ -171,6 +170,7 @@ public class SudokuGui extends JFrame {
     submitButton.setBorderPainted(false);
     submitButton.setBackground(Color.WHITE);
     submitButton.setFocusPainted(false);
+    controller.bindSubmitButton(submitButton);
 
     GridBagConstraints constraints = getConstraints();
     constraints.fill = GridBagConstraints.CENTER;

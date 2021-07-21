@@ -40,6 +40,9 @@ public class SudokuBoard {
   /** Increases numBlanksRemaining by 1. */
   public void increaseNumBlanksRemaining() { numBlanksRemaining++; }
 
+  /** Updates the value at a given location on the board. */
+  public void updateBoard(int row, int col, int val) { board[row][col] = val; }
+
   /** Generates a solvable sudoku puzzle. */
   private void createBoard() {
     generateDiagonalMatrices();
@@ -111,9 +114,8 @@ public class SudokuBoard {
    * @return true if the cell is valid
    */
   private boolean validCell(int row, int col, int val) {
-    if(board[row][col] != 0) return false;
-    return validRow(row, val) && validCol(col, val) &&
-            validBox(row - (row % BOX_DIMENSIONS), col - (col % BOX_DIMENSIONS), val);
+    return validRow(row, col, val) && validCol(col, row, val) &&
+            validBox(row - (row % BOX_DIMENSIONS), col - (col % BOX_DIMENSIONS), row, col, val);
   }
 
   /**
@@ -123,9 +125,9 @@ public class SudokuBoard {
    * @param val value of the cell
    * @return true if the row is valid
    */
-  private boolean validRow(int row, int val) {
+  private boolean validRow(int row, int colOfVal, int val) {
     for(int col = 0; col < BOARD_DIMENSIONS; col++) {
-      if(board[row][col] == val) return false;
+      if(col != colOfVal && board[row][col] == val) return false;
     }
     return true;
   }
@@ -137,9 +139,9 @@ public class SudokuBoard {
    * @param val value of the cell
    * @return true if the column is valid
    */
-  private boolean validCol(int col, int val) {
+  private boolean validCol(int col, int rowOfVal, int val) {
     for(int row = 0; row < BOARD_DIMENSIONS; row++) {
-      if(board[row][col] == val) return false;
+      if(row != rowOfVal && board[row][col] == val) return false;
     }
     return true;
   }
@@ -147,15 +149,15 @@ public class SudokuBoard {
   /**
    * Checks if a box contains the specified value and returns true if the box is valid (no other instances
    * of the value appear in the box).
-   * @param startingRow the row at which the box begins (top left corner)
-   * @param startingCol the column at which the box begins (top left corner)
+   * @param boxStartingRow the row at which the box begins (top left corner)
+   * @param boxStartingCol the column at which the box begins (top left corner)
    * @param val value of the cell
    * @return true if the box is valid
    */
-  private boolean validBox(int startingRow, int startingCol, int val) {
-    for(int row = startingRow; row < startingRow + BOX_DIMENSIONS; row++) {
-      for(int col = startingCol; col < startingCol + BOX_DIMENSIONS; col++) {
-        if(board[row][col] == val) return false;
+  private boolean validBox(int boxStartingRow, int boxStartingCol, int rowOfVal, int colOfVal, int val) {
+    for(int row = boxStartingRow; row < boxStartingRow + BOX_DIMENSIONS; row++) {
+      for(int col = boxStartingCol; col < boxStartingCol + BOX_DIMENSIONS; col++) {
+        if(!(rowOfVal == row && colOfVal == col) && board[row][col] == val) return false;
       }
     }
     return true;
@@ -188,7 +190,16 @@ public class SudokuBoard {
    * @return true if the board is valid
    */
   public boolean checkIfCorrect() {
-    return false;
+    if(numBlanksRemaining != 0) return false;
+    for(int row = 0; row < BOARD_DIMENSIONS; row++) {
+      for(int col = 0; col < BOARD_DIMENSIONS; col++) {
+        if(!validCell(row, col, board[row][col])) {
+//          System.out.println("Invalid at row: " + row + " col: " + col); // DEBUGGING
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   /**
