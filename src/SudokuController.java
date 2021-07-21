@@ -61,11 +61,11 @@ public class SudokuController {
         if(board.checkIfCorrect()) {
           Toast toast = new Toast("The board is correct!", gui);
           toast.display();
-          System.out.println("The board is correct!"); // TODO: Make GUI display this instead of printing it
+//          System.out.println("The board is correct!");
         } else {
           Toast toast = new Toast("The board is incorrect", gui);
           toast.display();
-          System.out.println("The board is incorrect.");
+//          System.out.println("The board is incorrect.");
         }
       }
 
