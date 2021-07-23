@@ -170,7 +170,7 @@ public class SudokuBoard {
   private void removeValues() {
     HashSet<Integer> cellsHidden = new HashSet<>();
     int numToRemove = switch(difficulty) {
-      case EASY -> 35;
+      case EASY -> 1;//35;
       case REGULAR -> 50;
       case CHALLENGING -> 60;
     };
@@ -194,7 +194,6 @@ public class SudokuBoard {
     for(int row = 0; row < BOARD_DIMENSIONS; row++) {
       for(int col = 0; col < BOARD_DIMENSIONS; col++) {
         if(!validCell(row, col, board[row][col])) {
-//          System.out.println("Invalid at row: " + row + " col: " + col); // DEBUGGING
           return false;
         }
       }

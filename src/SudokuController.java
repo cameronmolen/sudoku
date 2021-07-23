@@ -59,10 +59,10 @@ public class SudokuController {
 
       public void actionPerformed(ActionEvent e) {
         if(board.checkIfCorrect()) {
-          Toast toast = new Toast("The board is correct!", gui);
+          Toast toast = new Toast(true, gui);
           toast.display();
         } else {
-          Toast toast = new Toast("The board is incorrect", gui);
+          Toast toast = new Toast(false, gui);
           toast.display();
         }
       }

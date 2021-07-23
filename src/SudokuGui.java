@@ -39,6 +39,9 @@ public class SudokuGui extends JFrame {
     controller.setListener(listener);
   }
 
+  /** Returns the size of the GUI. */
+  public int getGuiDimensions() { return GUI_DIMENSIONS; }
+
   /**
    * Creates and returns the GUI menu.
    * @return the JMenuBar to be used by the GUI
@@ -215,40 +218,30 @@ class MenuItemListener implements ActionListener {
   }
 }
 
-/** Toast message class to be displayed when the player presses the submit button. */
-class Toast extends JFrame { // FIXME: Doesn't show the text on the toast. Look at createStats() method for possible solution
-  public Toast(String message, SudokuGui gui) {
+/** Toast to be displayed when the player presses the submit button. */
+class Toast extends JFrame {
+  public Toast(boolean correct, SudokuGui gui) {
     setUndecorated(true);
-    getContentPane().setLayout(new BorderLayout(0, 0));
-    getContentPane().setBackground(new Color(238, 238, 238, 170));
-    setSize(300, 50);
+    if(correct) {
+      setBackground(new Color(144,238,144));
+    } else {
+      setBackground(new Color(240,128,128));
+    }
+    setSize(gui.getGuiDimensions(), gui.getGuiDimensions());
     setLocationRelativeTo(gui);
     setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
-
-    // testing, not sure if necessary
-    JPanel panel = new JPanel();
-    panel.setBackground(Color.GRAY);
-    panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 2));
-    getContentPane().add(panel, BorderLayout.CENTER);
-
-    // Add JLabel to the toast containing the message
-    JLabel label = new JLabel(message);
-    label.setText(message);
-    label.setFont(new Font("Dialog", Font.BOLD, 12));
-    label.setForeground(Color.BLACK);
-    panel.add(label);
   }
 
-  /** Displays the toast message and slowly fades away. */
+  /** Displays the toast which slowly fades away. */
   public void display() {
     try {
       // Display the toast message
-      setOpacity(1);
+      setOpacity((float)0.5);
       setVisible(true);
-      Thread.sleep(1000);
+      Thread.sleep(300);
 
       // Slowly fade out toast message
-      for(double i = 1.0; i > 0.0; i -= 0.075) {
+      for(double i = 0.5; i > 0.0; i -= 0.025) {
         Thread.sleep(50);
         setOpacity((float)i);
       }
