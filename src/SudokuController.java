@@ -5,17 +5,13 @@ import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 public class SudokuController {
 
   private final JFormattedTextField[][] sudokuGrid;
   private final SudokuBoard board;
-  private SudokuGui gui;
-  SudokuListener listener;
+  private final SudokuGui gui;
   JLabel timeLabel;
-  Thread backgroundThread;
 
   /** Constructor for SudokuController class. */
   public SudokuController(SudokuBoard sudokuBoard, SudokuGui gui) {
@@ -23,9 +19,6 @@ public class SudokuController {
     this.gui = gui;
     sudokuGrid = new JFormattedTextField[board.getBoardDimensions()][board.getBoardDimensions()];
   }
-
-  /** Sets the listener for the SudokuController. */
-  public void setListener(SudokuListener listener) { this.listener = listener; }
 
   /**
    * Binds a cell in the GUI to the controller and listens for changes.
@@ -54,6 +47,7 @@ public class SudokuController {
     sudokuGrid[row][col] = field;
   }
 
+  /** Binds the submit button to the SudokuController. */
   public void bindSubmitButton(JButton button) {
     button.addActionListener(new ActionListener() {
 
@@ -70,16 +64,14 @@ public class SudokuController {
     });
   }
 
+  /** Binds the JLabel displaying the time to the SudokuController. */
   public void bindTimeLabel(JLabel timeLabel) {
     this.timeLabel = timeLabel;
   }
 
+  /** Updates the time on the timer JLabel. */
   public void setTimer(String time) {
-    EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        timeLabel.setText("Time Elapsed: " + time);
-      }
-    });
+    EventQueue.invokeLater(() -> timeLabel.setText("Time Elapsed: " + time));
   }
 
 }

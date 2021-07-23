@@ -1,7 +1,5 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
@@ -12,7 +10,7 @@ public class SudokuGui extends JFrame {
   private final SudokuController controller;
 
   /** Constructor for SudokuGui class. */
-  public SudokuGui(SudokuBoard sudokuBoard) {
+  public SudokuGui(SudokuBoard sudokuBoard){
     board = sudokuBoard;
     controller = new SudokuController(sudokuBoard, this);
     try {
@@ -32,11 +30,8 @@ public class SudokuGui extends JFrame {
     setMaximumSize(new Dimension(GUI_DIMENSIONS, GUI_DIMENSIONS));
     pack();
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-  }
 
-  /** Sets the listener for the SudokuController. */
-  public void setListener(SudokuListener listener) {
-    controller.setListener(listener);
+    new SudokuTimer(controller);
   }
 
   /** Returns the size of the GUI. */
@@ -163,6 +158,7 @@ public class SudokuGui extends JFrame {
    */
   private JPanel createStats() {
     JPanel layout = new JPanel(new GridBagLayout());
+//    JPanel layout = new JPanel(new GridLayout(1, 3, 20, 5));
 
     JLabel titleLabel = new JLabel("Sudoku");
     titleLabel.setFont(new Font("Dialog", Font.BOLD , 16));
@@ -203,7 +199,7 @@ public class SudokuGui extends JFrame {
 
 /** Calls a method based on the menu item that is selected. */
 class MenuItemListener implements ActionListener {
-  private SudokuGui gui;
+  private final SudokuGui gui;
 
   public MenuItemListener(SudokuGui gui) {
     this.gui = gui;
@@ -260,44 +256,3 @@ class Toast extends JFrame {
   }
 
 }
-
-//class Toast extends JDialog {
-//  int miliseconds;
-//  public Toast(String toastString, SudokuGui gui) {
-//    this.miliseconds = 1000;
-//    setUndecorated(true);
-//    getContentPane().setLayout(new BorderLayout(0, 0));
-//
-//    JPanel panel = new JPanel();
-//    panel.setBackground(Color.GRAY);
-//    panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 2));
-//    getContentPane().add(panel, BorderLayout.CENTER);
-//
-//    JLabel toastLabel = new JLabel("");
-//    toastLabel.setText(toastString);
-//    toastLabel.setFont(new Font("Dialog", Font.BOLD, 12));
-//    toastLabel.setForeground(Color.WHITE);
-//
-//    setBounds(100, 100, toastLabel.getPreferredSize().width+20, 31);
-//
-//
-//    setAlwaysOnTop(true);
-//    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-//    int y = dim.height/2-getSize().height/2;
-//    int half = y/2;
-//    setLocation(dim.width/2-getSize().width/2, y+half);
-//    panel.add(toastLabel);
-//    setVisible(false);
-//
-//    new Thread(){
-//      public void run() {
-//        try {
-//          Thread.sleep(miliseconds);
-//          dispose();
-//        } catch (InterruptedException e) {
-//          e.printStackTrace();
-//        }
-//      }
-//    }.start();
-//  }
-//}
