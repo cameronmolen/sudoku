@@ -31,9 +31,6 @@ public class SudokuBoard {
   /** Returns the dimensions of a single box. */
   public int getBoxDimensions() { return BOX_DIMENSIONS; }
 
-  /** Returns the number of blank fields remaining on the board. */
-  public int getNumBlanksRemaining() { return numBlanksRemaining; }
-
   /** Decreases numBlanksRemaining by 1. */
   public void decreaseNumBlanksRemaining() { numBlanksRemaining--; }
 

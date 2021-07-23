@@ -2,7 +2,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.RoundRectangle2D;
 
 public class SudokuGui extends JFrame {
   private final int GUI_DIMENSIONS = 550;
@@ -158,15 +157,14 @@ public class SudokuGui extends JFrame {
    */
   private JPanel createStats() {
     JPanel layout = new JPanel(new GridBagLayout());
-//    JPanel layout = new JPanel(new GridLayout(1, 3, 20, 5));
 
     JLabel titleLabel = new JLabel("Sudoku");
     titleLabel.setFont(new Font("Dialog", Font.BOLD , 16));
 
-    JLabel timeLabel = new JLabel("Time Elapsed: 0:00"); // TODO: Fix the alignment of each of these components. Should be evenly spaced with title in center
+    JLabel timeLabel = new JLabel("Time Elapsed: 0:00");
     controller.bindTimeLabel(timeLabel);
 
-    JButton submitButton = new JButton("Submit");
+    JButton submitButton = new JButton("Check Puzzle");
     submitButton.setBorderPainted(false);
     submitButton.setBackground(Color.WHITE);
     submitButton.setFocusPainted(false);
@@ -219,40 +217,4 @@ class MenuItemListener implements ActionListener {
     play.run(newBoard);
     gui.dispose();
   }
-}
-
-/** Toast to be displayed when the player presses the submit button. */
-class Toast extends JFrame {
-  public Toast(boolean correct, SudokuGui gui) {
-    setUndecorated(true);
-    if(correct) {
-      setBackground(new Color(144,238,144));
-    } else {
-      setBackground(new Color(240,128,128));
-    }
-    setSize(gui.getGuiDimensions(), gui.getGuiDimensions());
-    setLocationRelativeTo(gui);
-    setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
-  }
-
-  /** Displays the toast which slowly fades away. */
-  public void display() {
-    try {
-      // Display the toast message
-      setOpacity((float)0.5);
-      setVisible(true);
-      Thread.sleep(300);
-
-      // Slowly fade out toast message
-      for(double i = 0.5; i > 0.0; i -= 0.05) {
-        Thread.sleep(50);
-        setOpacity((float)i);
-      }
-
-      setVisible(false);
-    } catch(Exception e) {
-      System.out.println(e.getMessage());
-    }
-  }
-
 }

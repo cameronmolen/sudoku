@@ -3,12 +3,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SudokuController {
 
-  private final JFormattedTextField[][] sudokuGrid;
   private final SudokuBoard board;
   private final SudokuGui gui;
   JLabel timeLabel;
@@ -17,7 +14,6 @@ public class SudokuController {
   public SudokuController(SudokuBoard sudokuBoard, SudokuGui gui) {
     board = sudokuBoard;
     this.gui = gui;
-    sudokuGrid = new JFormattedTextField[board.getBoardDimensions()][board.getBoardDimensions()];
   }
 
   /**
@@ -44,23 +40,18 @@ public class SudokuController {
 
       public void changedUpdate(DocumentEvent e) {}
     });
-    sudokuGrid[row][col] = field;
   }
 
   /** Binds the submit button to the SudokuController. */
   public void bindSubmitButton(JButton button) {
-    button.addActionListener(new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-        if(board.checkIfCorrect()) {
-          Toast toast = new Toast(true, gui);
-          toast.display();
-        } else {
-          Toast toast = new Toast(false, gui);
-          toast.display();
-        }
+    button.addActionListener(e -> {
+      if(board.checkIfCorrect()) {
+        Toast toast = new Toast(true, gui);
+        toast.display();
+      } else {
+        Toast toast = new Toast(false, gui);
+        toast.display();
       }
-
     });
   }
 
