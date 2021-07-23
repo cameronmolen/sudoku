@@ -170,7 +170,7 @@ public class SudokuBoard {
   private void removeValues() {
     HashSet<Integer> cellsHidden = new HashSet<>();
     int numToRemove = switch(difficulty) {
-      case EASY -> 1;//35;
+      case EASY -> 35;
       case REGULAR -> 50;
       case CHALLENGING -> 60;
     };

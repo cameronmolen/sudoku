@@ -48,7 +48,7 @@ public class SudokuGui extends JFrame {
    */
   private JMenuBar createMenu() {
     JMenuBar menuBar = new JMenuBar();
-    MenuItemListener menuItemListener = new MenuItemListener();
+    MenuItemListener menuItemListener = new MenuItemListener(this);
     JMenu newGameMenu = new JMenu("New Game");
     
     JMenuItem easyMenuItem = new JMenuItem("Easy");
@@ -150,7 +150,7 @@ public class SudokuGui extends JFrame {
     JFormattedTextField field = new JFormattedTextField();
     field.setPreferredSize(new Dimension(15,15));
     field.setEditable(false);
-    field.setBackground(Color.WHITE);
+    field.setBackground(new Color(249,249,249));
     field.setHorizontalAlignment(JTextField.CENTER);
     field.setText(value);
     field.setBorder(null);
@@ -203,6 +203,12 @@ public class SudokuGui extends JFrame {
 
 /** Calls a method based on the menu item that is selected. */
 class MenuItemListener implements ActionListener {
+  private SudokuGui gui;
+
+  public MenuItemListener(SudokuGui gui) {
+    this.gui = gui;
+  }
+
   public void actionPerformed(ActionEvent e) {
     // Start new game with the specified difficulty
     SudokuBoard newBoard;
@@ -215,6 +221,7 @@ class MenuItemListener implements ActionListener {
     }
     SudokuPlay play = new SudokuPlay();
     play.run(newBoard);
+    gui.dispose();
   }
 }
 
@@ -241,7 +248,7 @@ class Toast extends JFrame {
       Thread.sleep(300);
 
       // Slowly fade out toast message
-      for(double i = 0.5; i > 0.0; i -= 0.025) {
+      for(double i = 0.5; i > 0.0; i -= 0.05) {
         Thread.sleep(50);
         setOpacity((float)i);
       }
